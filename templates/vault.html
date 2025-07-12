@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Your Secrets Vault 🔐</h2>
+
+<!-- Search + Add -->
+<div style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
+    <form method="GET" action="/vault" style="display: flex; gap: 8px;">
+        <input type="text" name="q" placeholder="Search secrets..." value="{{ request.args.get('q', '') }}">
+        <button type="submit">🔍 Search</button>
+    </form>
+    <a href="/add"><button style="background-color: #40916c;">+ Add Secret</button></a>
+    <a href="/export" style="margin-left: auto;"><button style="background-color: #adb5bd;">⬇️ Export CSV</button></a>
+</div>
+
+<!-- Pagination Controls -->
+<div class="pagination">
+    {% if page > 1 %}
+        <a href="?page={{ page - 1 }}{% if search %}&q={{ search }}{% endif %}">⬅️ Prev</a>
+    {% endif %}
+    
+    <span>Page {{ page }} of {{ total_pages }}</span>
+
+    {% if page < total_pages %}
+        <a href="?page={{ page + 1 }}{% if search %}&q={{ search }}{% endif %}">Next ➡️</a>
+    {% endif %}
+</div>
+
+<!-- Secrets List -->
+{% if secrets %}
+<ul>
+    {% for secret in secrets %}
+    <li>
+        <div>
+            <strong>{{ secret[1] }}</strong>: 
+            <span class="masked">•••••••</span>
+            <span class="real-secret" style="display:none;">{{ secret[2] }}</span>
+            <button onclick="toggleSecret(this)" style="margin-left: 8px;">👁️</button>
+        </div>
+        <div>
+            <a href="/edit/{{ secret[0] }}">✏️</a> |
+            <a href="/delete/{{ secret[0] }}" onclick="return confirm('Delete this secret?')">🗑️</a>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+  <p>No secrets yet. Click <a href="/add">Add Secret</a> to get started!</p>
+{% endif %}
+
+<script>
+  function toggleSecret(btn) {
+    const li = btn.closest("li");
+    const masked = li.querySelector(".masked");
+    const real = li.querySelector(".real-secret");
+
+    if (real.style.display === "none") {
+      masked.style.display = "none";
+      real.style.display = "inline";
+      btn.textContent = "🙈";
+    } else {
+      masked.style.display = "inline";
+      real.style.display = "none";
+      btn.textContent = "👁️";
+    }
+  }
+</script>
+{% endblock %}

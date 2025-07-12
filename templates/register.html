@@ -1,0 +1,59 @@
+<!-- templates/register.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 style="margin-bottom: 10px;">Create Your Account 📝</h2>
+
+<form method="POST" class="form-card">
+    <label>👤 Username:</label><br>
+    <input type="text" name="username" required><br><br>
+
+    <label>📧 Email:</label><br>
+    <input type="email" name="email" required><br><br>
+
+    <label>🔒 Password:</label><br>
+    <input type="password" id="password" name="password" required oninput="checkStrength()"><br>
+
+    <progress id="strengthBar" value="0" max="100" style="width: 100%; margin-top: 5px;"></progress>
+    <p id="strengthText" style="font-weight: bold;"></p>
+
+    <input type="checkbox" onclick="togglePassword()"> Show Password<br><br>
+
+    <button type="submit">🚀 Register</button>
+</form>
+
+<p style="margin-top: 15px;">Already have an account? <a href="/login">Login here</a></p>
+
+<script>
+function checkStrength() {
+    const password = document.getElementById("password").value;
+    const strengthBar = document.getElementById("strengthBar");
+    const strengthText = document.getElementById("strengthText");
+
+    let strength = 0;
+
+    if (password.length >= 8) strength += 25;
+    if (/[A-Z]/.test(password)) strength += 25;
+    if (/[0-9]/.test(password)) strength += 25;
+    if (/[^A-Za-z0-9]/.test(password)) strength += 25;
+
+    strengthBar.value = strength;
+
+    if (strength < 50) {
+        strengthText.innerText = "Weak 😬";
+        strengthText.style.color = "red";
+    } else if (strength < 75) {
+        strengthText.innerText = "Medium 🧐";
+        strengthText.style.color = "orange";
+    } else {
+        strengthText.innerText = "Strong 💪";
+        strengthText.style.color = "green";
+    }
+}
+
+function togglePassword() {
+    const input = document.getElementById("password");
+    input.type = input.type === "password" ? "text" : "password";
+}
+</script>
+{% endblock %}

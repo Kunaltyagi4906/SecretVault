@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+{% extends 'base.html' %}
+{% block content %}
+<h2>Edit Secret</h2>
+
+<form method="POST">
+    <label>Title</label><br>
+    <input type="text" name="title" value="{{ title }}" required><br><br>
+
+    <label>Secret</label><br>
+    <input type="password" name="secret" id="secretInput" value="{{ secret }}" required>
+    <button type="button" onclick="togglePassword()">👁️</button>
+    <div id="strengthText" style="margin-top: 5px; font-weight: bold;"></div><br>
+
+    <button type="submit">💾 Update</button>
+</form>
+
+<script>
+function togglePassword() {
+    const input = document.getElementById("secretInput");
+    input.type = input.type === "password" ? "text" : "password";
+}
+
+document.getElementById("secretInput").addEventListener("input", function () {
+    const val = this.value;
+    const strengthText = document.getElementById("strengthText");
+
+    let strength = "Weak 🔴";
+    if (val.length >= 8) {
+        if (/[A-Z]/.test(val) && /[a-z]/.test(val) && /[0-9]/.test(val) && /[\W_]/.test(val)) {
+            strength = "Strong ✅";
+        } else {
+            strength = "Medium 🟡";
+        }
+    }
+
+    strengthText.innerText = "Strength: " + strength;
+});
+</script>
+{% endblock %}
