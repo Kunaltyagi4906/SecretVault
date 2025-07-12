@@ -1,24 +1,43 @@
-<!-- templates/register.html -->
 {% extends 'base.html' %}
-
 {% block content %}
 <h2 style="margin-bottom: 10px;">Create Your Account 📝</h2>
 
-<form method="POST" class="form-card">
+<!-- 🛡️ Autofill-Safe Register Form -->
+<form method="POST" class="form-card" autocomplete="off" id="registerForm">
+
+    <!-- 🕵️ Dummy Fields to Fool Browser -->
+    <input type="text" name="fakeuser" style="display:none">
+    <input type="password" name="fakepass" style="display:none">
+
+    <!-- 👤 Username -->
     <label>👤 Username:</label><br>
-    <input type="text" name="username" required><br><br>
+    <input type="text" name="username"
+           autocomplete="off"
+           readonly onfocus="this.removeAttribute('readonly');"
+           required><br><br>
 
+    <!-- 📧 Email -->
     <label>📧 Email:</label><br>
-    <input type="email" name="email" required><br><br>
+    <input type="email" name="email"
+           autocomplete="off"
+           readonly onfocus="this.removeAttribute('readonly');"
+           required><br><br>
 
+    <!-- 🔒 Password (✅ Fixed name: 'password') -->
     <label>🔒 Password:</label><br>
-    <input type="password" id="password" name="password" required oninput="checkStrength()"><br>
+    <input type="password" id="password"
+           name="password"
+           autocomplete="new-password"
+           readonly onfocus="this.removeAttribute('readonly');"
+           required oninput="checkStrength()"><br>
 
     <progress id="strengthBar" value="0" max="100" style="width: 100%; margin-top: 5px;"></progress>
     <p id="strengthText" style="font-weight: bold;"></p>
 
+    <!-- 👁️ Show Password -->
     <input type="checkbox" onclick="togglePassword()"> Show Password<br><br>
 
+    <!-- 🚀 Submit -->
     <button type="submit">🚀 Register</button>
 </form>
 
@@ -31,14 +50,12 @@ function checkStrength() {
     const strengthText = document.getElementById("strengthText");
 
     let strength = 0;
-
     if (password.length >= 8) strength += 25;
     if (/[A-Z]/.test(password)) strength += 25;
     if (/[0-9]/.test(password)) strength += 25;
     if (/[^A-Za-z0-9]/.test(password)) strength += 25;
 
     strengthBar.value = strength;
-
     if (strength < 50) {
         strengthText.innerText = "Weak 😬";
         strengthText.style.color = "red";

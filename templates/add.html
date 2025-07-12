@@ -1,15 +1,21 @@
-<!DOCTYPE html>
-
+<!-- templates/add.html -->
 {% extends 'base.html' %}
+
 {% block content %}
 <h2>Add New Secret</h2>
 
-<form method="POST">
+<!-- 🛡️ Autofill-safe form -->
+<form method="POST" autocomplete="off">
+
+    <!-- 🕵️ Hidden dummy inputs to confuse autofill -->
+    <input type="text" name="fakeuser" style="display:none">
+    <input type="password" name="fakepass" style="display:none">
+
     <label>Title</label><br>
-    <input type="text" name="title" required><br><br>
+    <input type="text" name="title" autocomplete="off" required><br><br>
 
     <label>Secret</label><br>
-    <input type="password" name="secret" id="secretInput" required>
+    <input type="password" name="secret" id="secretInput" autocomplete="new-password" required>
     <button type="button" onclick="togglePassword()">👁️</button>
     <div id="strengthText" style="margin-top: 5px; font-weight: bold;"></div><br>
 
@@ -22,7 +28,7 @@ function togglePassword() {
     input.type = input.type === "password" ? "text" : "password";
 }
 
-// Live Strength Meter
+// 💪 Live Password Strength Meter
 document.getElementById("secretInput").addEventListener("input", function () {
     const val = this.value;
     const strengthText = document.getElementById("strengthText");

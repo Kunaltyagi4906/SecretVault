@@ -1,20 +1,24 @@
-<!-- templates/login.html -->
 {% extends 'base.html' %}
 
 {% block content %}
 <h2 style="margin-bottom: 10px;">Login to MyVault 🔐</h2>
 
-<form method="POST" class="form-card">
+<!-- 🛡️ Anti-autofill secure login form -->
+<form method="POST" class="form-card" autocomplete="off">
+    <!-- Invisible autofill traps -->
+    <input type="text" name="fakeuser" style="display:none">
+    <input type="password" name="fakepass" style="display:none">
+
     <label>👤 Username:</label><br>
-    <input type="text" name="username" required><br><br>
+    <input type="text" name="username" id="username" autocomplete="off" required readonly onfocus="this.removeAttribute('readonly')"><br><br>
 
     <label>🔑 Password:</label><br>
-    <input type="password" id="password" name="password" required><br><br>
+    <input type="password" name="password" id="password" autocomplete="new-password" required readonly onfocus="this.removeAttribute('readonly')"><br><br>
 
     <input type="checkbox" onclick="togglePassword()"> Show Password<br><br>
-
     <button type="submit">🔓 Login</button>
 </form>
+
 
 <p style="margin-top: 15px;">New here? <a href="/register">Register Now</a></p>
 
