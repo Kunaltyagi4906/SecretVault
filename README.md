@@ -1,12 +1,13 @@
 ---
 title: SecretSauce
 emoji: 🧂
-colorFrom: green
-colorTo: pink
+colorFrom: pink
+colorTo: purple
 sdk: docker
-app_file: app.py
+app_file: run.py
 pinned: false
 ---
+
 
 Your secrets are safe here!  
 This is a secure, personal, encrypted vault built with Flask, deployed using Docker on Hugging Face Spaces.
