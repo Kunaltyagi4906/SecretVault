@@ -1,7 +1,7 @@
-from flask import Blueprint
+from flask import Blueprint, redirect
 
 main = Blueprint('main', __name__)
 
 @main.route('/')
 def index():
-    return "Vault Home 🧠💎"
+    return redirect('/login')
