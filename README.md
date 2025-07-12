@@ -1,11 +1,10 @@
 ---
 title: SecretSauce
-emoji: 🧄
-colorFrom: purple
+emoji: 🧂
+colorFrom: green
 colorTo: pink
 sdk: docker
-sdk_version: "1.0"
-app_file: app.py
+app_file: run.py
 pinned: false
 ---
 
