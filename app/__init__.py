@@ -4,6 +4,8 @@ from app.vault import vault
 
 # 👇 Import highlight filter
 from utils.filters import highlight  
+from app.routes import main
+app.register_blueprint(main)
 
 def create_app():
     app = Flask(__name__, template_folder='../templates', static_folder='../static')
