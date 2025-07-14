@@ -63,9 +63,11 @@ def login():
             user = cursor.fetchone()
 
             if user and check_password_hash(user[1], password_input):
-                session['user_id'] = user[0]
-                session['username'] = username
-                return redirect('/vault')
+                 session['user_id'] = user[0]
+                 session['username'] = username
+                 print("🔐 Login success - user_id:", user[0])  # <-- move it here
+                 return redirect('/vault')
+
             else:
                 flash('Invalid credentials.')
                 return redirect('/login')
@@ -83,3 +85,4 @@ def logout():
     session.clear()
     flash('Logged out successfully.')
     return redirect('/login')
+print("🔐 Login success - user_id:", user[0])
