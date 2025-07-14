@@ -36,6 +36,7 @@ def show_vault():
     print("🧠 User in session:", session.get('user_id'))
     if 'user_id' not in session:
         return redirect('/login')
+    return "✅ Session is active, vault unlocked!"
 
     db = get_db_connection()
     cursor = db.cursor()
