@@ -85,4 +85,3 @@ def logout():
     session.clear()
     flash('Logged out successfully.')
     return redirect('/login')
-print("🔐 Login success - user_id:", user[0])
