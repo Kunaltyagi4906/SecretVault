@@ -2,18 +2,17 @@ import os
 import sqlite3
 import mysql.connector
 
-# TEMPORARY FIX
 print("🔁 USE_SQLITE =", os.environ.get("USE_SQLITE"))
 
-use_sqlite = os.environ.get("USE_SQLITE", "false").lower() == "true"
-# Hugging Face environment check
-if "SPACE_ID" in os.environ:
-    print("📦 Running on Hugging Face Space — forcing SQLite")
-    use_sqlite = True
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Path of current `db.py` file
+DB_PATH = os.path.join(BASE_DIR, '..', 'database.db')  # Go 1 level up and locate `database.db`
 
 def get_db_connection():
+    use_sqlite = os.environ.get("USE_SQLITE", "false").lower() == "true"
+
     if use_sqlite:
-        conn = sqlite3.connect("database.db")
+        print(f"🔗 Connecting to SQLite at: {DB_PATH}")
+        conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
         return conn
     else:
