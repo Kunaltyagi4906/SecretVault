@@ -66,7 +66,7 @@ def login():
                  session['user_id'] = user[0]
                  session['username'] = username
                  session.permanent = True 
-                 print("🔐 Login success - user_id:", user[0])  # <-- move it here
+                 print("🔐 Login success - user_id:", session['user_id'])   # <-- move it here
                  return redirect('/vault')
 
             else:
