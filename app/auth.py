@@ -1,6 +1,5 @@
 import re
 from utils.validators import is_strong_password
-
 from flask import Blueprint, render_template, request, redirect, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from config.db import get_db_connection
@@ -27,15 +26,18 @@ def register():
         db = get_db_connection()
         cursor = db.cursor()
 
+        # 💡 Check if we're using SQLite
+        is_sqlite = db.__class__.__module__.startswith("sqlite3")
+        placeholder = "?" if is_sqlite else "%s"
+
         try:
-            cursor.execute(
-                "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)",
-                (username, email, password)
-            )
+            query = f"INSERT INTO users (username, email, password) VALUES ({placeholder}, {placeholder}, {placeholder})"
+            cursor.execute(query, (username, email, password))
             db.commit()
             flash('Registration successful! 📧')
             return redirect('/login')
-        except:
+        except Exception as e:
+            print("🚨 Register Error:", e)
             flash('Username or email already exists 😬')
             return redirect('/register')
 
@@ -48,18 +50,29 @@ def login():
         username = request.form['username']
         password_input = request.form.get('password')
 
-
         db = get_db_connection()
         cursor = db.cursor()
-        cursor.execute("SELECT id, password FROM users WHERE username = %s", (username,))
-        user = cursor.fetchone()
 
-        if user and check_password_hash(user[1], password_input):
-            session['user_id'] = user[0]
-            session['username'] = username
-            return redirect('/vault')
-        else:
-            flash('Invalid credentials.')
+        # 💡 Check again for SQLite vs MySQL
+        is_sqlite = db.__class__.__module__.startswith("sqlite3")
+        placeholder = "?" if is_sqlite else "%s"
+
+        try:
+            query = f"SELECT id, password FROM users WHERE username = {placeholder}"
+            cursor.execute(query, (username,))
+            user = cursor.fetchone()
+
+            if user and check_password_hash(user[1], password_input):
+                session['user_id'] = user[0]
+                session['username'] = username
+                return redirect('/vault')
+            else:
+                flash('Invalid credentials.')
+                return redirect('/login')
+
+        except Exception as e:
+            print("🚨 Login Error:", e)
+            flash('Internal server error.')
             return redirect('/login')
 
     return render_template('login.html')

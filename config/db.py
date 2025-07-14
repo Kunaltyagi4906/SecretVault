@@ -2,16 +2,16 @@ import os
 import sqlite3
 import mysql.connector
 
-print("🔁 USE_SQLITE =", os.environ.get("USE_SQLITE"))
+# 🔗 Construct absolute path
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+DB_PATH = os.path.abspath(os.path.join(BASE_DIR, '..', 'database.db'))
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Path of current `db.py` file
-DB_PATH = os.path.join(BASE_DIR, '..', 'database.db')  # Go 1 level up and locate `database.db`
+print("🔗 Connecting to SQLite at:", DB_PATH)
 
 def get_db_connection():
     use_sqlite = os.environ.get("USE_SQLITE", "false").lower() == "true"
 
     if use_sqlite:
-        print(f"🔗 Connecting to SQLite at: {DB_PATH}")
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row
         return conn
