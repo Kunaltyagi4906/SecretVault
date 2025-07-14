@@ -1,12 +1,8 @@
-# .huggingface.yml
-
 title: SecretSauce 🧂🔐
 sdk: gradio
 app_file: app.py
 
-# 🔄 ENV to switch from MySQL to SQLite
 env:
   - USE_SQLITE=true
 
-# 🛠️ Build the SQLite DB before app starts
 pre_run: python3 init_db.py
