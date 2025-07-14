@@ -1,10 +1,7 @@
 from flask import Blueprint, redirect
 
 main = Blueprint('main', __name__)
+
 @main.route('/')
-def home():
-    if 'user_id' in session:
-        return redirect('/vault')
+def index():
     return redirect('/login')
-
-
