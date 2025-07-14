@@ -1,9 +1,3 @@
-from flask import Flask
-from app.auth import auth
-from app.vault import vault
-from app.routes import main  # if you have it
-from utils.filters import highlight
-
 import os
 from flask import Flask
 
@@ -22,6 +16,8 @@ def create_app():
     app.register_blueprint(vault)
     app.register_blueprint(main)
 
-    app.secret_key = "your_secret_key"
+  
+    app.secret_key = 'myvault-genz-rockzz-4321'
 
     return app
+
