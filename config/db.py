@@ -3,7 +3,7 @@ import sqlite3
 import mysql.connector
 
 def get_db_connection():
-    use_sqlite = os.environ.get("USE_SQLITE", "false").lower() == "true"
+    use_sqlite = os.environ.get("USE_SQLITE", "False").lower() == "True"
 
     if use_sqlite:
         conn = sqlite3.connect("database.db")

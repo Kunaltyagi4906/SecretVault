@@ -3,6 +3,6 @@ sdk: gradio
 app_file: app.py
 
 env:
-  - USE_SQLITE=true
+  - USE_SQLITE=True
 
 pre_run: python3 init_db.py
