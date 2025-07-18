@@ -1,6 +1,7 @@
 import os
 from flask import Flask
-from datetime import timedelta   # 👈 add this
+from datetime import timedelta
+from flask_session import Session  # ✅ NEW IMPORT
 
 from app.auth import auth
 from app.vault import vault
@@ -21,6 +22,9 @@ def create_app():
     app.permanent_session_lifetime = timedelta(minutes=60)
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
     app.config['SESSION_COOKIE_HTTPONLY'] = True
+    app.config['SESSION_TYPE'] = 'filesystem'  # ✅ REQUIRED FOR SESSION TO WORK ON HF
+
+    Session(app)  # ✅ initialize session handling
 
     # 🔗 Register Blueprints
     app.register_blueprint(auth)

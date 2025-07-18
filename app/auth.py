@@ -65,8 +65,7 @@ def login():
             if user and check_password_hash(user[1], password_input):
                  session['user_id'] = user[0]
                  session['username'] = username
-                 session.permanent = True 
-                 print("🔐 Login success - user_id:", session['user_id'])   # <-- move it here
+                 print("🔐 Login success - user_id:", user[0])  # <-- move it here
                  return redirect('/vault')
 
             else:
@@ -86,3 +85,4 @@ def logout():
     session.clear()
     flash('Logged out successfully.')
     return redirect('/login')
+

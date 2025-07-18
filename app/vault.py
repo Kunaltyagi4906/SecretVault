@@ -33,9 +33,8 @@ def export_vault():
 
 @vault.route('/vault')
 def show_vault():
-    print("🧠 Session check in /vault:", session)
+    print("🧠 User in session:", session.get('user_id'))
     if 'user_id' not in session:
-        print("🚫 No session, redirecting to login...")
         return redirect('/login')
     
 
