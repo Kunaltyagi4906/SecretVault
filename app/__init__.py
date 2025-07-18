@@ -1,11 +1,6 @@
+from flask_session import Session
 import os
-from flask import Flask
 from datetime import timedelta
-from flask_session import Session  # ✅ NEW IMPORT
-
-from app.auth import auth
-from app.vault import vault
-from app.routes import main
 
 def create_app():
     base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -19,12 +14,15 @@ def create_app():
     app.secret_key = 'myvault-genz-rockzz-4321'
 
     # ✅ Session Configurations
+    app.config['SESSION_TYPE'] = 'filesystem'
+    app.config['SESSION_FILE_DIR'] = '/tmp/flask_session'  # 🛠️ this is the fix
     app.permanent_session_lifetime = timedelta(minutes=60)
     app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
     app.config['SESSION_COOKIE_HTTPONLY'] = True
-    app.config['SESSION_TYPE'] = 'filesystem'  # ✅ REQUIRED FOR SESSION TO WORK ON HF
 
-    Session(app)  # ✅ initialize session handling
+    # 🧠 Don't forget to initialize Flask-Session
+    from flask_session import Session
+    Session(app)
 
     # 🔗 Register Blueprints
     app.register_blueprint(auth)
