@@ -63,6 +63,8 @@ def login():
             user = cursor.fetchone()
 
             if user and check_password_hash(user[1], password_input):
+                 session.permanent = True  # 👈 Add this line
+
                  session['user_id'] = user[0]
                  session['username'] = username
                  print("🔐 Login success - user_id:", user[0])  # <-- move it here
