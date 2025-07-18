@@ -1,6 +1,14 @@
 from flask_session import Session
 import os
 from datetime import timedelta
+from flask import Flask
+import os
+from flask import Flask
+from datetime import timedelta
+
+from app.auth import auth
+from app.vault import vault
+from app.routes import main
 
 def create_app():
     base_dir = os.path.abspath(os.path.dirname(__file__))
