@@ -46,9 +46,12 @@ def register():
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    print("✅ Session after login:", session)
+
     if request.method == 'POST':
         username = request.form['username']
         password_input = request.form.get('password')
+        print("✅ Session after login:", session)
 
         db = get_db_connection()
         cursor = db.cursor()
