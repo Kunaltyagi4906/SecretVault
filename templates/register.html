@@ -1,49 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2 style="margin-bottom: 10px;">Create Your Account 📝</h2>
+<h2 style="margin-bottom:20px; color:#2d6a4f;">Create Your Account 📝</h2>
 
-<!-- 🛡️ Autofill-Safe Register Form -->
-<form method="POST" class="form-card" autocomplete="off" id="registerForm">
-
-    <!-- 🕵️ Dummy Fields to Fool Browser -->
+<form method="POST" class="form-card" autocomplete="off">
+    <!-- Dummy fields to prevent autofill -->
     <input type="text" name="fakeuser" style="display:none">
     <input type="password" name="fakepass" style="display:none">
 
-    <!-- 👤 Username -->
+    <!-- Username -->
     <label>👤 Username:</label><br>
-    <input type="text" name="username"
-           autocomplete="off"
-           readonly onfocus="this.removeAttribute('readonly');"
-           required><br><br>
+    <input type="text" name="username" autocomplete="off" required readonly onfocus="this.removeAttribute('readonly');" style="margin-bottom:15px;"><br>
 
-    <!-- 📧 Email -->
+    <!-- Email -->
     <label>📧 Email:</label><br>
-    <input type="email" name="email"
-           autocomplete="off"
-           readonly onfocus="this.removeAttribute('readonly');"
-           required><br><br>
+    <input type="email" name="email" autocomplete="off" required readonly onfocus="this.removeAttribute('readonly');" style="margin-bottom:15px;"><br>
 
-    <!-- 🔒 Password (✅ Fixed name: 'password') -->
+    <!-- Password -->
     <label>🔒 Password:</label><br>
-    <input type="password" id="password"
-           name="password"
-           autocomplete="new-password"
-           readonly onfocus="this.removeAttribute('readonly');"
-           required oninput="checkStrength()"><br>
+    <input type="password" id="password" name="password" autocomplete="new-password" required readonly onfocus="this.removeAttribute('readonly');" oninput="checkStrength()" style="margin-bottom:5px;">
+    <progress id="strengthBar" value="0" max="100" style="width:100%; margin-top:5px;"></progress>
+    <p id="strengthText" style="font-weight:bold; margin-bottom:10px;"></p>
 
-    <progress id="strengthBar" value="0" max="100" style="width: 100%; margin-top: 5px;"></progress>
-    <p id="strengthText" style="font-weight: bold;"></p>
+    <input type="checkbox" onclick="togglePassword()" style="margin-bottom:10px;"> Show Password<br>
 
-    <!-- 👁️ Show Password -->
-    <input type="checkbox" onclick="togglePassword()"> Show Password<br><br>
-
-    <!-- 🚀 Submit -->
+    <!-- Submit -->
     <button type="submit">🚀 Register</button>
 </form>
 
-<p style="margin-top: 15px;">Already have an account? <a href="/login">Login here</a></p>
+<p style="margin-top:15px;">Already have an account? <a href="/login">Login here</a></p>
 
 <script>
+function togglePassword() {
+    const input = document.getElementById("password");
+    input.type = input.type === "password" ? "text" : "password";
+}
+
 function checkStrength() {
     const password = document.getElementById("password").value;
     const strengthBar = document.getElementById("strengthBar");
@@ -66,11 +57,6 @@ function checkStrength() {
         strengthText.innerText = "Strong 💪";
         strengthText.style.color = "green";
     }
-}
-
-function togglePassword() {
-    const input = document.getElementById("password");
-    input.type = input.type === "password" ? "text" : "password";
 }
 </script>
 {% endblock %}

@@ -1,43 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Your Secrets Vault 🔐</h2>
+<h2 class="vault-title">Your Secrets Vault 🔐</h2>
 
-<!-- Search + Add -->
-<div style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center;">
-    <form method="GET" action="/vault" style="display: flex; gap: 8px;">
+<!-- Search + Add + Export -->
+<div class="vault-controls">
+    <form method="GET" action="/vault">
         <input type="text" name="q" placeholder="Search secrets..." value="{{ request.args.get('q', '') }}">
         <button type="submit">🔍 Search</button>
     </form>
-    <a href="/add"><button style="background-color: #40916c;">+ Add Secret</button></a>
-    <a href="/export" style="margin-left: auto;"><button style="background-color: #adb5bd;">⬇️ Export CSV</button></a>
+    <a href="/add"><button class="btn-primary">+ Add Secret</button></a>
+    <a href="/export"><button class="btn-secondary">⬇️ Export CSV</button></a>
 </div>
 
-<!-- Pagination Controls -->
+<!-- Pagination -->
 <div class="pagination">
     {% if page > 1 %}
         <a href="?page={{ page - 1 }}{% if search %}&q={{ search }}{% endif %}">⬅️ Prev</a>
     {% endif %}
-    
     <span>Page {{ page }} of {{ total_pages }}</span>
-
     {% if page < total_pages %}
         <a href="?page={{ page + 1 }}{% if search %}&q={{ search }}{% endif %}">Next ➡️</a>
     {% endif %}
 </div>
 
-<!-- Secrets List -->
+<!-- Vault Secrets List -->
 {% if secrets %}
-<ul>
+<ul class="vault-list">
     {% for secret in secrets %}
-    <li>
-        <div>
-            <strong>{{ secret[1] }}</strong>: 
+    <li class="vault-card">
+        <div class="vault-content">
+            <strong>{{ secret[1] }}</strong>:
             <span class="masked">•••••••</span>
             <span class="real-secret" style="display:none;">{{ secret[2] }}</span>
-            <button onclick="toggleSecret(this)" style="margin-left: 8px;">👁️</button>
+            <div class="vault-buttons">
+                <button onclick="toggleSecret(this)">👁️</button>
+                <button onclick="copySecret(this)">📋</button>
+            </div>
         </div>
-        <div>
+        <div class="vault-actions">
             <a href="/edit/{{ secret[0] }}">✏️</a> |
             <a href="/delete/{{ secret[0] }}" onclick="return confirm('Delete this secret?')">🗑️</a>
         </div>
@@ -45,24 +46,65 @@
     {% endfor %}
 </ul>
 {% else %}
-  <p>No secrets yet. Click <a href="/add">Add Secret</a> to get started!</p>
+<p class="no-secrets">No secrets yet. Click <a href="/add">Add Secret</a> to get started!</p>
 {% endif %}
 
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- 🔧 JS for toggle & copy -->
 <script>
-  function toggleSecret(btn) {
+function toggleSecret(btn) {
     const li = btn.closest("li");
     const masked = li.querySelector(".masked");
     const real = li.querySelector(".real-secret");
 
     if (real.style.display === "none") {
-      masked.style.display = "none";
-      real.style.display = "inline";
-      btn.textContent = "🙈";
+        masked.style.opacity = 0;
+        setTimeout(() => {
+            masked.style.display = "none";
+            real.style.display = "inline";
+            real.style.opacity = 1;
+        }, 200);
+        btn.textContent = "🙈";
     } else {
-      masked.style.display = "inline";
-      real.style.display = "none";
-      btn.textContent = "👁️";
+        real.style.opacity = 0;
+        setTimeout(() => {
+            real.style.display = "none";
+            masked.style.display = "inline";
+            masked.style.opacity = 1;
+        }, 200);
+        btn.textContent = "👁️";
     }
-  }
+}
+
+function copySecret(btn) {
+    const li = btn.closest("li");
+    const real = li.querySelector(".real-secret").innerText;
+
+    navigator.clipboard.writeText(real).then(() => {
+        showToast("Secret copied ✅");
+    }).catch(() => {
+        showToast("Copy failed ❌");
+    });
+}
+
+function showToast(msg) {
+    const toast = document.getElementById("toast");
+    toast.innerText = msg;
+    toast.style.display = "block";
+    toast.style.opacity = 1;
+    toast.style.transform = "translateY(-20px)";
+    toast.style.transition = "all 0.5s ease";
+
+    setTimeout(() => {
+        toast.style.opacity = 0;
+        toast.style.transform = "translateY(-40px)";
+    }, 1500);
+
+    setTimeout(() => {
+        toast.style.display = "none";
+    }, 2000);
+}
 </script>
 {% endblock %}

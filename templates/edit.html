@@ -1,25 +1,24 @@
-<!-- templates/edit.html -->
 {% extends 'base.html' %}
-
 {% block content %}
-<h2>Edit Secret</h2>
+<h2 style="margin-bottom:20px; color:#2d6a4f;">Edit Secret ✏️</h2>
 
-<!-- 🛡️ Autofill-safe form -->
-<form method="POST" autocomplete="off">
-
-    <!-- 🕵️ Hidden dummy fields to confuse autofill -->
+<form method="POST" class="form-card" autocomplete="off">
+    <!-- Dummy fields to prevent autofill -->
     <input type="text" name="fakeuser" style="display:none">
     <input type="password" name="fakepass" style="display:none">
 
+    <!-- Title -->
     <label>Title</label><br>
-    <input type="text" name="title" value="{{ title }}" autocomplete="off" required><br><br>
+    <input type="text" name="title" value="{{ title }}" autocomplete="off" required style="margin-bottom:15px;"><br>
 
+    <!-- Secret -->
     <label>Secret</label><br>
-    <input type="password" name="secret" id="secretInput" value="{{ secret }}" autocomplete="new-password" required>
-    <button type="button" onclick="togglePassword()">👁️</button>
-    <div id="strengthText" style="margin-top: 5px; font-weight: bold;"></div><br>
+    <input type="password" name="secret" id="secretInput" value="{{ secret }}" autocomplete="new-password" required style="margin-bottom:5px;">
+    <button type="button" onclick="togglePassword()" style="margin-left:5px; border:none; background:none; cursor:pointer;">👁️</button>
+    <div id="strengthText" style="margin-top:5px; font-weight:bold;"></div><br>
 
-    <button type="submit">💾 Update</button>
+    <!-- Submit -->
+    <button type="submit">💾 Update Secret</button>
 </form>
 
 <script>
@@ -28,19 +27,18 @@ function togglePassword() {
     input.type = input.type === "password" ? "text" : "password";
 }
 
-document.getElementById("secretInput").addEventListener("input", function () {
+document.getElementById("secretInput").addEventListener("input", function() {
     const val = this.value;
     const strengthText = document.getElementById("strengthText");
 
     let strength = "Weak 🔴";
-    if (val.length >= 8) {
-        if (/[A-Z]/.test(val) && /[a-z]/.test(val) && /[0-9]/.test(val) && /[\W_]/.test(val)) {
+    if(val.length >= 8){
+        if(/[A-Z]/.test(val) && /[a-z]/.test(val) && /[0-9]/.test(val) && /[\W_]/.test(val)) {
             strength = "Strong ✅";
         } else {
             strength = "Medium 🟡";
         }
     }
-
     strengthText.innerText = "Strength: " + strength;
 });
 </script>

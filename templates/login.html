@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<h2 style="margin-bottom: 10px;">Login to MyVault 🔐</h2>
+<h2 style="margin-bottom:20px; color:#2d6a4f;">Login to MyVault 🔐</h2>
 
-<!-- 🛡️ Anti-autofill secure login form -->
 <form method="POST" class="form-card" autocomplete="off">
-    <!-- Invisible autofill traps -->
+    <!-- Dummy fields to prevent autofill -->
     <input type="text" name="fakeuser" style="display:none">
     <input type="password" name="fakepass" style="display:none">
 
+    <!-- Username -->
     <label>👤 Username:</label><br>
-    <input type="text" name="username" id="username" autocomplete="off" required readonly onfocus="this.removeAttribute('readonly')"><br><br>
+    <input type="text" name="username" id="username" autocomplete="off" required readonly onfocus="this.removeAttribute('readonly');" style="margin-bottom:15px;"><br>
 
+    <!-- Password -->
     <label>🔑 Password:</label><br>
-    <input type="password" name="password" id="password" autocomplete="new-password" required readonly onfocus="this.removeAttribute('readonly')"><br><br>
+    <input type="password" name="password" id="password" autocomplete="new-password" required readonly onfocus="this.removeAttribute('readonly');" style="margin-bottom:5px;">
+    <input type="checkbox" onclick="togglePassword()" style="margin-top:5px;"> Show Password<br><br>
 
-    <input type="checkbox" onclick="togglePassword()"> Show Password<br><br>
+    <!-- Submit -->
     <button type="submit">🔓 Login</button>
 </form>
 
-
-<p style="margin-top: 15px;">New here? <a href="/register">Register Now</a></p>
+<p style="margin-top:15px;">New here? <a href="/register">Register Now</a></p>
 
 <script>
 function togglePassword() {

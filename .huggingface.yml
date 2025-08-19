@@ -1,8 +1,0 @@
-title: SecretSauce 🧂🔐
-sdk: gradio
-app_file: app.py
-
-env:
-  - USE_SQLITE=true
-
-pre_run: python3 init_db.py
