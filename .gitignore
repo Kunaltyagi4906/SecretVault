@@ -1,25 +1,22 @@
-# Python
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Env
+# Environment and secrets
 .env
 secret.key
-
-# Databases
 *.db
-*.sqlite3
 
-# Logs
-*.log
-
-# IDE stuff
-.vscode/
-.idea/
-*.swp
+# Virtual environments
+venv/
+ENV/
+.venv/
 
 # OS files
 .DS_Store
 Thumbs.db
+
+# Hugging Face & deployment
+.huggingface/
