@@ -6,3 +6,4 @@ with open('secret.key', 'wb') as key_file:
     key_file.write(key)
 
 print("✅ Secret key generated and saved as secret.key")
+ 
